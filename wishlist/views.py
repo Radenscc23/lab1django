@@ -11,7 +11,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/wishlist/login/')
 def show_wishlist(request):
@@ -22,6 +22,16 @@ def show_wishlist(request):
     'last_login': request.COOKIES['last_login'],
     }
     return render(request, "wishlist.html", context)
+
+@login_required(login_url='login/')
+def show_wishlist_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+    'list_barang': data_barang_wishlist,
+    'nama': 'Raden',
+    'last_login': request.COOKIES['last_login'],
+    }
+    return render(request, "wishlist_ajax.html", context)
     
 def show_xml(request):
     data = BarangWishlist.objects.all()
@@ -70,5 +80,16 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+@login_required(login_url='login/')
+@csrf_exempt #referensi: https://docs.djangoproject.com/en/4.1/ref/csrf/
+def create_list(request):
+    if request.method == "POST":
+        nama_barang = request.POST.get('nama_barang')
+        harga_barang = request.POST.get('harga_barang')
+        deskripsi = request.POST.get('deskripsi')
+        create_wishlist = BarangWishlist.objects.create(nama_barang=nama_barang,harga_barang=harga_barang,deskripsi=deskripsi)
+        systemresponse = HttpResponseRedirect(reverse("create_wishlist:show_wishlist_ajax"))
+
+        return systemresponse
     
 # Create your views here.

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h5>Nama: </h5>
+<p>{{nama}}</p>
+<style>
+    table{
+  width: 100%;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("http://localhost:8000/wishlist/json/", function(data){
+              for(i=0; i<data.length;i++){
+                //Referensi dari https://www.w3schools.com/jquery/html_append.asp
+                $(".checkbarang").append(`<tr><td>${data[i].fields.nama_barang}</td><td>${data[i].fields.harga_barang}</td>${data[i].fields.deskripsi}</td></tr>`)
+              }
+
+            });
+            $("#submit").click(function(){
+              $.post("http://localhost:8000/wishlist/ajax/submit", {nama_barang: $("#nama").val(), harga_barang:parseInt($("#harga_barang").val()), deksripsi: $("#deskripsi").val()})
+        })
+      });
+    </script>
+    </head>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Halo, {{nama}}</a>
+      <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+      </div>
+    </nav>
+
+<form method="POST" action="">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <td> Nama Barang:</td>
+        <td>
+          <input
+          type = "text"
+          name = "nama_barang"
+          placeholder = "Nama Barang"
+          id = "nama_barang" 
+          class = "form-control"
+          />
+      </td>
+    </tr>
+    <tr>
+      <td> Harga Barang:</td>
+        <td>
+          <input
+          type = "text"
+          name = "harga_barang"
+          placeholder = "Harga Barang"
+          id = "Harga Barang" 
+          class = "form-control"
+          />
+      </td>
+    </tr>
+    <tr>
+      <td> Deskripsi:</td>
+        <td>
+          <input
+          type = "text"
+          name = "deskripsi"
+          placeholder = "deskripsi"
+          id = "deksripsi" 
+          class = "form-control"
+          />
+        </td>
+      </tr>
+
+      <tr>
+        <td><button id="submit">Create</button></td>
+      </tr>
+    </table>
+  </form>
+
+  
+<table class = "checkbarang">
+    <tr>
+    <th>Nama Barang</th>
+    <th>Harga Barang</th>
+    <th>Deskripsi</th>
+    </tr>
+    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+    {% for barang in list_barang %}
+        <tr>
+            <th>{{barang.nama_barang}}</th>
+            <th>{{barang.harga_barang}}</th>
+            <th>{{barang.deskripsi}}</th>
+        </tr>
+{% endfor %}
+</table>
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+
+{% endblock content %}

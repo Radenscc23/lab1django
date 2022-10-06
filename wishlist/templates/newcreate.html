@@ -1,0 +1,44 @@
+<form method="POST" action="">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td> Nama Barang:</td>
+          <td>
+            <input
+            type = "text"
+            name = "nama_barang"
+            placeholder = "Nama Barang"
+            id = "nama_barang" 
+            class = "form-control"
+            />
+        </td>
+      </tr>
+      <tr>
+        <td> Harga Barang:</td>
+          <td>
+            <input
+            type = "text"
+            name = "harga_barang"
+            placeholder = "Harga Barang"
+            id = "Harga Barang" 
+            class = "form-control"
+            />
+        </td>
+      </tr>
+      <tr>
+        <td> Deskripsi:</td>
+          <td>
+            <input
+            type = "text"
+            name = "deskripsi"
+            placeholder = "deskripsi"
+            id = "deksripsi" 
+            class = "form-control"
+            />
+          </td>
+        </tr>
+        <tr>
+            <td><button id="submit">Create</button></td>
+          </tr>
+      </table>
+    </form>
