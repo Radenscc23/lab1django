@@ -23,7 +23,7 @@ def show_wishlist(request):
     }
     return render(request, "wishlist.html", context)
 
-@login_required(login_url='login/')
+@login_required(login_url='/wishlist/login/')
 def show_wishlist_ajax(request):
     data_barang_wishlist = BarangWishlist.objects.all()
     context = {
